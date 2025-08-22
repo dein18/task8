@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-user-limits
+      author: dsevseev
+      changes:
+        - createTable:
+            tableName: user_limits
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: limit_value
+                  type: NUMERIC(19,2)
+                  defaultValue: 10000.00
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_updated
+                  type: DATE
+                  defaultValueComputed: CURRENT_DATE
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2-insert-test-users
+      author: dsevseev
+      changes:
+        - loadData:
+            file: db_changelog/2025.1.1/data/user_limits.csv
+            tableName: user_limits
+            separator: ","
+            columns:
+              - column:
+                  name: user_id
+                  type: NUMERIC
+              - column:
+                  name: limit_value
+                  type: NUMERIC
+              - column:
+                  name: last_updated
+                  type: DATE
